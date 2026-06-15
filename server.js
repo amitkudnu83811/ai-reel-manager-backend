@@ -1,4 +1,6 @@
 const express = require("express");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
@@ -28,6 +30,22 @@ app.get("/test-supabase", async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
+      error: err.message
+    });
+  }
+});
+
+app.get("/instagram-test", async (req, res) => {
+  try {
+    const response = await fetch(
+      `https://graph.instagram.com/me?fields=id,username&access_token=${process.env.IGAAOht7WRa99BZAFo1cGNteDc2TjRZAcUlJREw4U2VOSW1Td1pwV0JaUG9RbExpdm11RFFxTUhWMl9XdXp6WERoZAHoyY2NsQVhJTzNva0pxLWIyUzJ6NHYtTS1LZAVM2TEhUS1dfZAkVuNnpCMFExVDdjaThxQkxsMnpYWmxpdDI5dwZDZD}`
+    );
+
+    const data = await response.json();
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({
       error: err.message
     });
   }
