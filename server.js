@@ -56,3 +56,64 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+app.get("/upload-reel", async (req, res) => {
+  try {
+    const { video_url, caption } = req.query;
+
+    if (!video_url || !caption) {
+      return res.status(400).json({
+        success: false,
+        message: "video_url and caption required"
+      });
+    }
+
+    // STEP 1: Create media container
+    const createResponse = await fetch(
+      `https://graph.facebook.com/v23.0/${process.env.INSTAGRAM_BUSINESS_ID}/media?` +
+      new URLSearchParams({
+        media_type: "REELS",
+        video_url: video_url,
+        caption: caption,
+        access_token: process.env.FACEBOOK_ACCESS_TOKEN
+      }),
+      { method: "POST" }
+    );
+
+    const createData = await createResponse.json();
+
+    if (!createData.id) {
+      return res.status(500).json({
+        success: false,
+        step: "container_create_failed",
+        error: createData
+      });
+    }
+
+    const creationId = createData.id;
+
+    // STEP 2: Publish reel
+    const publishResponse = await fetch(
+      `https://graph.facebook.com/v23.0/${process.env.INSTAGRAM_BUSINESS_ID}/media_publish?` +
+      new URLSearchParams({
+        creation_id: creationId,
+        access_token: process.env.FACEBOOK_ACCESS_TOKEN
+      }),
+      { method: "POST" }
+    );
+
+    const publishData = await publishResponse.json();
+
+    return res.json({
+      success: true,
+      message: "Reel uploaded successfully 🚀",
+      creation_id: creationId,
+      publish_data: publishData
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
