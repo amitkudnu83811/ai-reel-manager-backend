@@ -74,7 +74,7 @@ app.get("/upload-reel", async (req, res) => {
         media_type: "REELS",
         video_url: video_url,
         caption: caption,
-        access_token: process.env.FACEBOOK_ACCESS_TOKEN
+        access_token: process.env.EAAdnftas5k4BRi2BDKtoYNUxFR336drWUTueMr1YzAUt6ZCm4Jy0el5YGkyG8kJdI0zT7GC7WPNCSrK28bzwGbfQrKpbjIPObnm7f5TINaeGKljaqws4bA8AZAoQ7ZCytu4mogoU10cueZAHaZAy5Q4QvwZACZBclaARtyEjnLwBel7rZA83zgyg3qXxZACje
       }),
       { method: "POST" }
     );
@@ -96,7 +96,7 @@ app.get("/upload-reel", async (req, res) => {
       `https://graph.facebook.com/v23.0/${process.env.INSTAGRAM_BUSINESS_ID}/media_publish?` +
       new URLSearchParams({
         creation_id: creationId,
-        access_token: process.env.FACEBOOK_ACCESS_TOKEN
+        access_token: process.env.EAAdnftas5k4BRi2BDKtoYNUxFR336drWUTueMr1YzAUt6ZCm4Jy0el5YGkyG8kJdI0zT7GC7WPNCSrK28bzwGbfQrKpbjIPObnm7f5TINaeGKljaqws4bA8AZAoQ7ZCytu4mogoU10cueZAHaZAy5Q4QvwZACZBclaARtyEjnLwBel7rZA83zgyg3qXxZACje
       }),
       { method: "POST" }
     );
